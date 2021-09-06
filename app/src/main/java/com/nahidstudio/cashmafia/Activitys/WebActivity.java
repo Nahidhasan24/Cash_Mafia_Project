@@ -100,6 +100,7 @@ public class WebActivity extends AppCompatActivity {
             //update task count//
             //getCount();
 
+
             CheckCount();
 
             mrRef.addValueEventListener(new ValueEventListener() {
@@ -246,10 +247,8 @@ public class WebActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
                             Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
                             CheckCountResume();
+                            CheckTime();
 
-
-
-//                            countDownTimer.start();
 
                         }else {
                             Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
