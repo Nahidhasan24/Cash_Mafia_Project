@@ -81,11 +81,11 @@ public class WebActivity extends AppCompatActivity {
         Random random=new Random();
         ptn=random.nextInt(11)+1;
 
-
-        dbcheck();
+        //for getting point for db//
         getpoint();
+        //for app config checking//
         GetData();
-        CheckTime();
+        //for continue checking vpn//
         MainCheck();
 
         setSupportActionBar(binding.toolbar);
@@ -93,9 +93,6 @@ public class WebActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.visitWebBtn.setOnClickListener(v->{
             binding.visitWebBtn.setEnabled(false);
-
-            getCount();
-            CheckCount();
 
 
             mrRef.addValueEventListener(new ValueEventListener() {
@@ -118,10 +115,6 @@ public class WebActivity extends AppCompatActivity {
 
                 }
             });
-
-
-
-
 
 
 
@@ -221,7 +214,6 @@ public class WebActivity extends AppCompatActivity {
     }
     private void ShowAd(){
        StartAppAd.showAd(getApplicationContext());
-        CheckCount();
         UPdata(ptn);
 
 
