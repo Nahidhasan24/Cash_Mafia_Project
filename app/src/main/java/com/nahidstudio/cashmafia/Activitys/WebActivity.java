@@ -368,10 +368,7 @@ public class WebActivity extends AppCompatActivity {
                                 binding.visitWebBtn.setEnabled(true);
 
                             } else {
-                                binding.visitWebBtn.setOnClickListener(v->{
-                                    Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
 
-                                });
                                 Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
                                 binding.visitWebBtn.setEnabled(false);
                             }

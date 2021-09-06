@@ -405,10 +405,7 @@ public class WatchAdsActivity extends AppCompatActivity {
                                 binding.watchAdsBtn.setEnabled(true);
 
                             } else {
-                                binding.watchAdsBtn.setOnClickListener(v->{
-                                    Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
 
-                                });
                                 Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
                                 binding.watchAdsBtn.setEnabled(false);
                             }

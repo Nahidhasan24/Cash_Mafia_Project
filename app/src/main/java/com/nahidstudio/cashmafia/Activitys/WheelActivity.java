@@ -512,10 +512,7 @@ public class WheelActivity extends AppCompatActivity {
                                 binding.button.setEnabled(true);
 
                             } else {
-                                binding.button.setOnClickListener(v->{
-                                    Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
 
-                                });
                                 Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
                                 binding.button.setEnabled(false);
                             }

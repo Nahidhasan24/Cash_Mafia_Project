@@ -79,16 +79,16 @@ public class ScrathActivity extends AppCompatActivity {
 
 
         MainCheck();
+        CheckTime();
 
         binding.scratchView.setRevealListener(new ScratchView.IRevealListener() {
             @Override
             public void onRevealed(ScratchView scratchView) {
 
                 binding.scratchView.clear();
+                CheckCount();
 
                 Toast.makeText(getApplicationContext(), "Congregation", Toast.LENGTH_SHORT).show();
-
-
                 ShowAd();
 
 
@@ -175,6 +175,7 @@ public class ScrathActivity extends AppCompatActivity {
                                         if (task.isSuccessful()){
                                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
                                             Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
+                                            CheckTime();
 
                                         }else {
 
@@ -344,18 +345,15 @@ public class ScrathActivity extends AppCompatActivity {
 
                             if (CURRENT_TIME >= TASK_TIME) {
                                 DatabaseReference  mPostReference = FirebaseDatabase.getInstance().getReference()
-                                        .child("Tasks").child("web").
+                                        .child("Tasks").child("scratch").
                                                 child(uid);
                                 mPostReference.removeValue();
-                                binding.scratchView.setEnabled(true);
+                                binding.scratchView.setVisibility(View.VISIBLE);
 
                             } else {
-                                binding.scratchView.setOnClickListener(v->{
-                                    Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
 
-                                });
                                 Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
-                                binding.visitWebBtn.setEnabled(false);
+                                binding.scratchView.setVisibility(View.GONE);
                             }
 
                         }
@@ -368,14 +366,14 @@ public class ScrathActivity extends AppCompatActivity {
                 });
 
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
-                .child("web");
+                .child("scratch");
         drs.child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             Counter counter = snapshot.getValue(Counter.class);
-                            binding.webCountTv.setText(String.valueOf(counter.getCount()));
+                            binding.cardCountTv.setText(String.valueOf(counter.getCount()));
                         }
                     }
 
@@ -394,7 +392,7 @@ public class ScrathActivity extends AppCompatActivity {
 
 
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
-                .child("web");
+                .child("scratch");
         drs.child(uid)
                 .setValue(counter);
 
@@ -404,7 +402,7 @@ public class ScrathActivity extends AppCompatActivity {
     private void CheckCountResume(){
 
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
-                .child("web");
+                .child("scratch");
         drs.child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -428,8 +426,11 @@ public class ScrathActivity extends AppCompatActivity {
 
     }
 
-
-
+    @Override
+    protected void onResume() {
+        CheckTime();
+        super.onResume();
+    }
 }
 
 
