@@ -323,7 +323,7 @@ public class WebActivity extends AppCompatActivity {
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
                 .child("web");
         drs.child(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
