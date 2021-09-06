@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "162849681523",
+    "project_id": "cashmafeia",
+    "storage_bucket": "cashmafeia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162849681523:android:5c5ab6976c16a6fc73ba06",
+        "android_client_info": {
+          "package_name": "com.nahidstudio.cashmafia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162849681523-5pc3300e8u3ls1j1t6385kqr3n16m3j4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeJOxQrd2cYelm_or4Cfv7d2WQAMjv9S8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162849681523-5pc3300e8u3ls1j1t6385kqr3n16m3j4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

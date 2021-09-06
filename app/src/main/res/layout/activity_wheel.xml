@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#DCD8DF"
+    tools:context=".Activitys.WheelActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" >
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/amaranth"
+                android:padding="5dp"
+                android:text="@string/lucky_wheel"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/spin_count_tv"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/amaranth"
+                android:padding="5dp"
+                android:text="0"
+                android:layout_marginEnd="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+       android:layout_width="match_parent"
+       android:orientation="vertical"
+       android:gravity="center"
+       android:layout_height="match_parent">
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           >
+
+
+           <com.nahidstudio.cashmafia.SpinWheel.LuckyWheelView
+               android:id="@+id/wheel_view"
+               android:layout_width="275dp"
+               android:layout_height="275dp"
+               app:lkwCenterImage="@android:color/transparent"
+               android:src="@drawable/wheel_photo"
+               android:layout_gravity="center">
+
+           </com.nahidstudio.cashmafia.SpinWheel.LuckyWheelView>
+           <ImageView
+               android:layout_gravity="center"
+               android:layout_width="350dp"
+               android:layout_height="350dp"
+               android:src="@drawable/wheel_bg"/>
+
+           <ImageView
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:src="@drawable/arrow"
+               android:layout_gravity="center_horizontal"
+               android:layout_marginBottom="50dp"/>
+
+       </FrameLayout>
+
+       <Button
+           android:id="@+id/button"
+           android:layout_width="200dp"
+           android:layout_height="60dp"
+           android:layout_marginTop="20dp"
+           android:text="Spin" />
+   </LinearLayout>
+
+
+
+</RelativeLayout>

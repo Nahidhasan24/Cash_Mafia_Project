@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Cash Mafia</string>
+    <string name="lucky_wheel">Lucky wheel</string>
+    <string name="watch_ads">Watch Ads</string>
+    <string name="scratch_card">Scratch Card</string>
+    <string name="visit_website">Visit WebSite</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="daily_checking">Daily Checking</string>
+    <string name="telegram">Telegram</string>
+    <string name="login">Login</string>
+    <string name="enter_mail">Enter mail</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="new_here_signup">New here ? signup</string>
+    <string name="already_have_account_login_here">Already Have Account ? login here</string>
+    <string name="withdraw">Withdraw</string>
+    <string name="telegram_url">http://telegram.me/myId</string>
+    <string name="startapp_id">208461289</string>
+    <string name="congregation_you_won">Congregation You Won</string>
+    <string name="facebook">https://www.facebook.com</string>
+</resources>
+
+
+
+
+
+
+
+

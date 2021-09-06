@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_gravity="center"
+    android:background="@color/purple_500"
+    android:layout_height="300dp">
+
+    <EditText
+        android:id="@+id/login_mail_et"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/edit_bg"
+        android:ems="10"
+        android:hint="Enter Account"
+        android:inputType="text"
+        android:paddingStart="10dp"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FBFBFB" />
+
+
+    <EditText
+        android:id="@+id/login_pass_et"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/login_mail_et"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="50dp"
+        android:background="@drawable/edit_bg"
+        android:paddingStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:ems="10"
+        android:hint="How Match ??"
+        android:inputType="text"
+        android:selectAllOnFocus="false"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FBFBFB" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/login_pass_et"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="#E91E63"
+        android:text="@string/withdraw" />
+
+</RelativeLayout>

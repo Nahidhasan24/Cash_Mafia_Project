@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:id="@+id/home"
+        />
+    <item android:title="Withdraw"
+        android:icon="@drawable/ic_baseline_monetization_on_24"
+        android:id="@+id/withdraw"
+        />
+    <item android:title="Contact us"
+        android:icon="@drawable/ic_baseline_feedback_24"
+        android:id="@+id/contactus"
+        />
+    <item android:title="About"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:id="@+id/about"
+        />
+</menu>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
