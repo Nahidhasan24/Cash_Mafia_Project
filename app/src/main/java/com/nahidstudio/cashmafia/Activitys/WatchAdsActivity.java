@@ -365,7 +365,7 @@ public class WatchAdsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
                         if (snapshot.exists()) {
-                            if (counter.getCount() >= 15) {
+                            if (counter.getCount() >= 14) {
                                 UpdateTime();
                                 start(0);
                             } else {

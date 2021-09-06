@@ -87,6 +87,8 @@ public class WebActivity extends AppCompatActivity {
         GetData();
         //for continue checking vpn//
         MainCheck();
+        //for check time matching//
+        CheckTime();
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -94,6 +96,11 @@ public class WebActivity extends AppCompatActivity {
         binding.visitWebBtn.setOnClickListener(v->{
             binding.visitWebBtn.setEnabled(false);
 
+
+            //update task count//
+            //getCount();
+
+            CheckCount();
 
             mrRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -126,16 +133,8 @@ public class WebActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    ShowAd();
-
-
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    Toast.makeText(getApplicationContext(), "Close Whe Website ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Close The Website ", Toast.LENGTH_SHORT).show();
+                    UPdata(ptn);
                     binding.visitWebBtn.setEnabled(true);
 
 
@@ -212,14 +211,6 @@ public class WebActivity extends AppCompatActivity {
 
 
     }
-    private void ShowAd(){
-       StartAppAd.showAd(getApplicationContext());
-        UPdata(ptn);
-
-
-
-
-    }
     private void getpoint() {
 
         user.child(uid)
@@ -275,7 +266,6 @@ public class WebActivity extends AppCompatActivity {
 
 
 
-
     private void UpdateTime(){
 
         PutTime putTime=new PutTime(date.getHours()+2,"web");
@@ -307,13 +297,17 @@ public class WebActivity extends AppCompatActivity {
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
                 .child("web");
         drs.child(uid)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
+                        if (!snapshot.exists()){
+                            start(1);
+                        }else {
                             Counter counter = snapshot.getValue(Counter.class);
+                            binding.webCountTv.setText(String.valueOf(counter.getCount()));
                             COUNT = counter.getCount();
                             UpdateCount(COUNT);
+
                         }
                     }
 
@@ -329,20 +323,17 @@ public class WebActivity extends AppCompatActivity {
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
                 .child("web");
         drs.child(uid)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
                         if (snapshot.exists()) {
-                            if (counter.getCount() >= 13) {
+                            if (counter.getCount() >= 14) {
                                 UpdateTime();
                                 start(0);
-                               //exit(0);
                             } else {
-
                                 UpdateCount(counter.getCount());
                                 CheckTime();
-
                             }
                         }
                     }
@@ -361,7 +352,7 @@ public class WebActivity extends AppCompatActivity {
 
         DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Tasks").child("web");
         databaseReference.child(uid).
-                addValueEventListener(new ValueEventListener() {
+                addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -397,12 +388,13 @@ public class WebActivity extends AppCompatActivity {
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
                 .child("web");
         drs.child(uid)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             Counter counter = snapshot.getValue(Counter.class);
-                            binding.webCountTv.setText(String.valueOf(counter.getCount()));                        }
+                            binding.webCountTv.setText(String.valueOf(counter.getCount()));
+                        }
                     }
 
                     @Override
@@ -427,7 +419,7 @@ public class WebActivity extends AppCompatActivity {
 
     }
 
-    private void dbcheck(){
+    private void CheckCountResume(){
 
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
                 .child("web");
@@ -436,8 +428,11 @@ public class WebActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
-                        if (!snapshot.exists()) {
-                            start(1);
+                        if (snapshot.exists()) {
+                            if (counter.getCount() >= 14) {
+                                UpdateTime();
+                                start(0);
+                            }
                         }
                     }
 
@@ -449,13 +444,14 @@ public class WebActivity extends AppCompatActivity {
 
 
 
-
-
     }
 
 
-
-
+    @Override
+    protected void onResume() {
+        CheckCountResume();
+        super.onResume();
+    }
 }
 
 
