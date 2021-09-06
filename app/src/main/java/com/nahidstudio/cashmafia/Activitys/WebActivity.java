@@ -126,7 +126,7 @@ public class WebActivity extends AppCompatActivity {
 
 
 
-            CountDownTimer c=new CountDownTimer(10000,1000) {
+            CountDownTimer c=new CountDownTimer(60000,1000) {
                 @Override
                 public void onTick(long l) {
 

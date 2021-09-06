@@ -72,21 +72,20 @@ public class ScrathActivity extends AppCompatActivity {
         uid= mAuth.getCurrentUser().getUid();
         date=new Date();
         CURRENT_TIME= date.getHours();
+        Random random=new Random();
+        CARD_POINT=random.nextInt(11)+1;
+        binding.cardPointTv.setText(String.valueOf(CARD_POINT));
 
 
-        CheckTime();
+
         MainCheck();
 
         binding.scratchView.setRevealListener(new ScratchView.IRevealListener() {
             @Override
             public void onRevealed(ScratchView scratchView) {
-                Random random=new Random();
-                CARD_POINT=random.nextInt(11)+1;
-                binding.cardPointTv.setText(String.valueOf(CARD_POINT));
+
                 binding.scratchView.clear();
 
-                getCount();
-                CheckCount();
                 Toast.makeText(getApplicationContext(), "Congregation", Toast.LENGTH_SHORT).show();
 
 
@@ -105,50 +104,50 @@ public class ScrathActivity extends AppCompatActivity {
 
     }
     private void ShowAd(){
-//        final StartAppAd rewardedVideo = new StartAppAd(this);
-//
-//        rewardedVideo.setVideoListener(new VideoListener() {
-//
-//
-//            @Override
-//            public void onVideoCompleted() {
-//                //UpdatePoint();
-//                //Toast.makeText(getApplicationContext(), "Close Ads onVideoCompleted", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-//
-//        rewardedVideo.loadAd(StartAppAd.AdMode.REWARDED_VIDEO, new AdEventListener() {
-//
-//            @Override
-//            public void onReceiveAd(Ad ad) {
-//                rewardedVideo.showAd();
-//                //Toast.makeText(getApplicationContext(), "ads is finish", Toast.LENGTH_SHORT).show();
-//                CountDownTimer countDownTimer=new CountDownTimer(6000,1000) {
-//                    @Override
-//                    public void onTick(long l) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onFinish() {
-//
-//                        //Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }.start();
-//
-//            }
-//
-//            @Override
-//            public void onFailedToReceiveAd(Ad ad) {
-//                Toast.makeText(getApplicationContext(), "onFailedToReceiveAd", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//        });
-        StartAppAd.showAd(getApplicationContext());
-        UpdatePoint();
+        final StartAppAd rewardedVideo = new StartAppAd(this);
+
+        rewardedVideo.setVideoListener(new VideoListener() {
+
+
+            @Override
+            public void onVideoCompleted() {
+                //UpdatePoint();
+                //Toast.makeText(getApplicationContext(), "Close Ads onVideoCompleted", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        rewardedVideo.loadAd(StartAppAd.AdMode.REWARDED_VIDEO, new AdEventListener() {
+
+            @Override
+            public void onReceiveAd(Ad ad) {
+                rewardedVideo.showAd();
+                //Toast.makeText(getApplicationContext(), "ads is finish", Toast.LENGTH_SHORT).show();
+                CountDownTimer countDownTimer=new CountDownTimer(60000,1000) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                        //Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
+                        UpdatePoint();
+                    }
+                }.start();
+
+            }
+
+            @Override
+            public void onFailedToReceiveAd(Ad ad) {
+                Toast.makeText(getApplicationContext(), "onFailedToReceiveAd", Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
+
 
 
     }
@@ -176,8 +175,7 @@ public class ScrathActivity extends AppCompatActivity {
                                         if (task.isSuccessful()){
                                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
                                             Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
-                                             startActivity(new Intent(getApplicationContext(),ScrathActivity.class));
-                                             finishAffinity();
+
                                         }else {
 
                                             Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -200,7 +198,6 @@ public class ScrathActivity extends AppCompatActivity {
 
 
     }
-
     private void MainCheck() {
 
         final Handler handler = new Handler();
@@ -251,7 +248,6 @@ public class ScrathActivity extends AppCompatActivity {
 
 
 
-
     private void UpdateTime(){
 
         PutTime putTime=new PutTime(date.getHours()+2,"scratch");
@@ -287,9 +283,10 @@ public class ScrathActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()){
-                            start(0);
+                            start(1);
                         }else {
                             Counter counter = snapshot.getValue(Counter.class);
+                            binding.cardPointTv.setText(String.valueOf(counter.getCount()));
                             COUNT = counter.getCount();
                             UpdateCount(COUNT);
 
@@ -312,13 +309,14 @@ public class ScrathActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
-                        Toast.makeText(getApplicationContext(), "You Scratch "+COUNT, Toast.LENGTH_LONG).show();
-                        assert counter != null;
-                        if (counter.getCount()>=13){
-                            UpdateTime();
-                        }else {
-                            UpdateCount(counter.getCount());
-                            CheckTime();
+                        if (snapshot.exists()) {
+                            if (counter.getCount() >= 14) {
+                                UpdateTime();
+                                start(0);
+                            } else {
+                                UpdateCount(counter.getCount());
+                                CheckTime();
+                            }
                         }
                     }
 
@@ -345,13 +343,19 @@ public class ScrathActivity extends AppCompatActivity {
                             TASK_TIME = putTime.getTime();
 
                             if (CURRENT_TIME >= TASK_TIME) {
-                                start(0);
-                                binding.cardPointTv.setEnabled(true);
+                                DatabaseReference  mPostReference = FirebaseDatabase.getInstance().getReference()
+                                        .child("Tasks").child("web").
+                                                child(uid);
+                                mPostReference.removeValue();
+                                binding.scratchView.setEnabled(true);
 
                             } else {
+                                binding.scratchView.setOnClickListener(v->{
+                                    Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
 
+                                });
                                 Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
-                                binding.cardPointTv.setEnabled(false);
+                                binding.visitWebBtn.setEnabled(false);
                             }
 
                         }
@@ -360,6 +364,24 @@ public class ScrathActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
+                .child("web");
+        drs.child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            Counter counter = snapshot.getValue(Counter.class);
+                            binding.webCountTv.setText(String.valueOf(counter.getCount()));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
 
@@ -372,25 +394,41 @@ public class ScrathActivity extends AppCompatActivity {
 
 
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
-                .child("scratch");
+                .child("web");
         drs.child(uid)
                 .setValue(counter);
 
 
     }
 
-    private void newThread(){
-        Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
+    private void CheckCountResume(){
+
+        DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
+                .child("web");
+        drs.child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Counter counter=snapshot.getValue(Counter.class);
+                        if (snapshot.exists()) {
+                            if (counter.getCount() >= 14) {
+                                UpdateTime();
+                                start(0);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
 
-
-            }
-        });
-        thread.start();
     }
+
+
 
 }
 
