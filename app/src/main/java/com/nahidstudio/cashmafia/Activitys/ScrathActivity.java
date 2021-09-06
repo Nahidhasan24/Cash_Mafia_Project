@@ -348,12 +348,12 @@ public class ScrathActivity extends AppCompatActivity {
                                         .child("Tasks").child("scratch").
                                                 child(uid);
                                 mPostReference.removeValue();
-                                binding.scratchView.setVisibility(View.VISIBLE);
+                                binding.cont.setVisibility(View.VISIBLE);
 
                             } else {
 
                                 Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
-                                binding.scratchView.setVisibility(View.GONE);
+                                binding.cont.setVisibility(View.GONE);
                             }
 
                         }
