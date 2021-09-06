@@ -245,6 +245,7 @@ public class WebActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
                             Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
+                            CheckCountResume();
 
 
 
@@ -323,7 +324,7 @@ public class WebActivity extends AppCompatActivity {
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
                 .child("web");
         drs.child(uid)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
