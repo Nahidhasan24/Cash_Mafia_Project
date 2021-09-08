@@ -473,7 +473,7 @@ public class WheelActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
                         binding.spinCountTv.setText(String.valueOf(COUNT));
-                        if (counter.getCount()>=13){
+                        if (counter.getCount()>=14){
                             UpdateTime();
                             start(0);
                         }else {
@@ -528,7 +528,7 @@ public class WheelActivity extends AppCompatActivity {
 
 
         DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
-                .child("ads");
+                .child("wheel");
         drs.child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

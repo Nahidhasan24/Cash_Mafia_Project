@@ -291,7 +291,7 @@ public class HomeFragment extends Fragment {
                                         progressDialog.dismiss();
                                         if (task.isSuccessful()){
                                             Toast.makeText(getContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
-                                            StartAppAd.showAd(getActivity());
+                                            //StartAppAd.showAd(getActivity());
                                         }else {
                                             Toast.makeText(getContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
                                         }

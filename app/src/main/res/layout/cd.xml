@@ -6,7 +6,7 @@
     android:layout_height="300dp">
 
     <EditText
-        android:id="@+id/login_mail_et"
+        android:id="@+id/mail_et"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="50dp"
@@ -25,19 +25,19 @@
 
 
     <EditText
-        android:id="@+id/login_pass_et"
+        android:id="@+id/pass_et"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/login_mail_et"
+        android:layout_below="@+id/mail_et"
         android:layout_centerInParent="true"
         android:layout_marginStart="50dp"
-        android:background="@drawable/edit_bg"
-        android:paddingStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
+        android:background="@drawable/edit_bg"
         android:ems="10"
         android:hint="How Match ??"
         android:inputType="text"
+        android:paddingStart="10dp"
         android:selectAllOnFocus="false"
         android:shadowColor="#FFFFFF"
         android:textColor="#FFFFFF"
@@ -46,10 +46,10 @@
         android:textColorLink="#FBFBFB" />
 
     <Button
-        android:id="@+id/login_btn"
+        android:id="@+id/btn"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:layout_below="@+id/login_pass_et"
+        android:layout_below="@+id/pass_et"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"

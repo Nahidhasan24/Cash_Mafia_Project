@@ -1,6 +1,7 @@
 package com.nahidstudio.cashmafia.Models;
 
 public class UserModel {
+
     private String uid;
     private String name;
     private String mail;

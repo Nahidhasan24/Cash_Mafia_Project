@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.nahidstudio.cashmafia.Fragments.AboutFragment;
 import com.nahidstudio.cashmafia.Fragments.HomeFragment;
 import com.nahidstudio.cashmafia.Fragments.WithdrawFragment;
 import com.nahidstudio.cashmafia.R;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 i.setData(Uri.parse(getString(R.string.facebook)));
                 startActivity(i);
 
+            }else if (item.getItemId()==R.id.about){
+                showfragment(new AboutFragment());
             }
 
 

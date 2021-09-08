@@ -73,11 +73,14 @@ public class SplashActivity extends AppCompatActivity {
 
         NetworkInfo vpn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_VPN);
         NetworkInfo mobileNetwork = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 
         if (!vpn.isConnected()) {
             showDialog("Connect Vpn");
 
+        }else if (!mobileNetwork.isConnected() && !wifi.isConnected()){
+            showDialog("No InterNet Connection");
         }else {
             pass();
         }
