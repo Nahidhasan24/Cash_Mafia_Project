@@ -49,8 +49,11 @@ import com.nahidstudio.cashmafia.Models.UserModel;
 import com.nahidstudio.cashmafia.R;
 import com.nahidstudio.cashmafia.databinding.FragmentHomeBinding;
 import com.squareup.picasso.Picasso;
+import com.startapp.sdk.ads.video.VideoEnabledAd;
+import com.startapp.sdk.adsbase.Ad;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.startapp.sdk.adsbase.StartAppSDK;
+import com.startapp.sdk.adsbase.adlisteners.AdDisplayListener;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -70,6 +73,7 @@ public class HomeFragment extends Fragment {
     String TodayDateString;
     int POINT_CHECKING=10;
     int totalPoint;
+    StartAppAd startAppAd;
     ProgressDialog progressDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -82,7 +86,7 @@ public class HomeFragment extends Fragment {
         mAuth=FirebaseAuth.getInstance();
         uid= mAuth.getCurrentUser().getUid();
         StartAppSDK.init(getActivity(),getString(R.string.startapp_id));
-
+        startAppAd=new StartAppAd(getActivity());
 
         AppConfig();
         MainCheck();
@@ -178,7 +182,9 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (!snapshot.exists()){
+
                     NewUserChecking(daily);
+
                 }else{
                     CheckingUser(daily);
                 }
@@ -271,45 +277,26 @@ public class HomeFragment extends Fragment {
     //up point
     private void UpdatePoint(){
 
-        mrRef.child(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        startAppAd.showAd();
+        startAppAd.showAd(new AdDisplayListener() {
 
-                        UserModel userModel=snapshot.getValue(UserModel.class);
-                        totalPoint=POINT_CHECKING+userModel.getPoint();
-                        //Toast.makeText(getActivity(), String.valueOf(totalPoint), Toast.LENGTH_SHORT).show();
-
-                        HashMap<String,Object> map=new HashMap<>();
-                        map.put("point",totalPoint);
-                        ///Toast.makeText(getContext(), String.valueOf(totalPoint), Toast.LENGTH_SHORT).show();
-                        mrRef.child(uid)
-                                .updateChildren(map)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        progressDialog.dismiss();
-                                        if (task.isSuccessful()){
-                                            Toast.makeText(getContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
-                                            //StartAppAd.showAd(getActivity());
-                                        }else {
-                                            Toast.makeText(getContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    }
-                                });
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        progressDialog.dismiss();
-                    }
-                });
-
-
-
+            @Override
+            public void adHidden(Ad ad) {
+                upp();
+            }
+            @Override
+            public void adDisplayed(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads Displayed", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void adClicked(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads clicked", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void adNotDisplayed(Ad ad) {
+                Toast.makeText(getActivity(), "ads not Displayed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -424,6 +411,48 @@ public class HomeFragment extends Fragment {
 
         AlertDialog alertDialog = alertDialogBuilder1.create();
         alertDialog.show();
+
+
+
+    }
+    private void upp(){
+
+        mrRef.child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        UserModel userModel=snapshot.getValue(UserModel.class);
+                        totalPoint=POINT_CHECKING+userModel.getPoint();
+                        //Toast.makeText(getActivity(), String.valueOf(totalPoint), Toast.LENGTH_SHORT).show();
+
+                        HashMap<String,Object> map=new HashMap<>();
+                        map.put("point",totalPoint);
+                        ///Toast.makeText(getContext(), String.valueOf(totalPoint), Toast.LENGTH_SHORT).show();
+                        mrRef.child(uid)
+                                .updateChildren(map)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                        if (task.isSuccessful()){
+                                            Toast.makeText(getContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
+                                            //StartAppAd.showAd(getActivity());
+                                        }else {
+                                            Toast.makeText(getContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                });
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        progressDialog.dismiss();
+                    }
+                });
 
 
 

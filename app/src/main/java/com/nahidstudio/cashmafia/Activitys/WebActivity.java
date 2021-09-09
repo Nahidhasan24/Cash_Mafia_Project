@@ -245,7 +245,7 @@ public class WebActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
+
                             CheckCountResume();
                             CheckTime();
 
@@ -426,7 +426,7 @@ public class WebActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
                         if (snapshot.exists()) {
-                            if (counter.getCount() >= 14) {
+                            if (counter.getCount() >= 15) {
                                 UpdateTime();
                                 start(0);
                             }

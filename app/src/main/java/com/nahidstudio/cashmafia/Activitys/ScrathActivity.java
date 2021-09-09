@@ -35,7 +35,9 @@ import com.nahidstudio.cashmafia.Models.UserModel;
 import com.nahidstudio.cashmafia.R;
 import com.nahidstudio.cashmafia.databinding.ActivityScrathBinding;
 import com.startapp.sdk.adsbase.Ad;
+import com.startapp.sdk.adsbase.AdsConstants;
 import com.startapp.sdk.adsbase.StartAppAd;
+import com.startapp.sdk.adsbase.adlisteners.AdDisplayListener;
 import com.startapp.sdk.adsbase.adlisteners.AdEventListener;
 import com.startapp.sdk.adsbase.adlisteners.VideoListener;
 
@@ -58,6 +60,7 @@ public class ScrathActivity extends AppCompatActivity {
     int COUNT=0;
     int CURRENT_TIME;
     int TASK_TIME;
+    StartAppAd startAppAd;
     Date date;
     int pointr;
 
@@ -72,6 +75,7 @@ public class ScrathActivity extends AppCompatActivity {
         uid= mAuth.getCurrentUser().getUid();
         date=new Date();
         CURRENT_TIME= date.getHours();
+        startAppAd=new StartAppAd(getApplicationContext());
         Random random=new Random();
         CARD_POINT=random.nextInt(11)+1;
         binding.cardPointTv.setText(String.valueOf(CARD_POINT));
@@ -104,49 +108,27 @@ public class ScrathActivity extends AppCompatActivity {
 
     }
     private void ShowAd(){
-        final StartAppAd rewardedVideo = new StartAppAd(this);
 
-        rewardedVideo.setVideoListener(new VideoListener() {
-
+       startAppAd.showAd();
+        startAppAd.showAd(new AdDisplayListener() {
 
             @Override
-            public void onVideoCompleted() {
-                //UpdatePoint();
-                //Toast.makeText(getApplicationContext(), "Close Ads onVideoCompleted", Toast.LENGTH_SHORT).show();
-
+            public void adHidden(Ad ad) {
+                UpdatePoint();
+            }
+            @Override
+            public void adDisplayed(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads Displayed", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void adClicked(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads clicked", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void adNotDisplayed(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads not Displayed", Toast.LENGTH_SHORT).show();
             }
         });
-
-        rewardedVideo.loadAd(StartAppAd.AdMode.REWARDED_VIDEO, new AdEventListener() {
-
-            @Override
-            public void onReceiveAd(Ad ad) {
-                rewardedVideo.showAd();
-                //Toast.makeText(getApplicationContext(), "ads is finish", Toast.LENGTH_SHORT).show();
-                CountDownTimer countDownTimer=new CountDownTimer(60000,1000) {
-                    @Override
-                    public void onTick(long l) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                        //Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
-                        UpdatePoint();
-                    }
-                }.start();
-
-            }
-
-            @Override
-            public void onFailedToReceiveAd(Ad ad) {
-                Toast.makeText(getApplicationContext(), "onFailedToReceiveAd", Toast.LENGTH_SHORT).show();
-
-            }
-
-        });
-
 
 
 
@@ -174,8 +156,9 @@ public class ScrathActivity extends AppCompatActivity {
 
                                         if (task.isSuccessful()){
                                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
-                                            Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
+                                            binding.scratchView.mask();
                                             CheckTime();
+
 
                                         }else {
 
@@ -311,7 +294,7 @@ public class ScrathActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
                         if (snapshot.exists()) {
-                            if (counter.getCount() >= 14) {
+                            if (counter.getCount() >= 15) {
                                 UpdateTime();
                                 start(0);
                             } else {
@@ -352,7 +335,7 @@ public class ScrathActivity extends AppCompatActivity {
 
                             } else {
 
-                                Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Your Task Limit 15 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
                                 binding.cont.setVisibility(View.GONE);
                             }
 
@@ -409,7 +392,7 @@ public class ScrathActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Counter counter=snapshot.getValue(Counter.class);
                         if (snapshot.exists()) {
-                            if (counter.getCount() >= 14) {
+                            if (counter.getCount() >= 15) {
                                 UpdateTime();
                                 start(0);
                             }

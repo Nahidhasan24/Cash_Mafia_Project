@@ -42,6 +42,7 @@ import com.nahidstudio.cashmafia.databinding.ActivityWheelBinding;
 import com.startapp.sdk.adsbase.Ad;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.startapp.sdk.adsbase.StartAppSDK;
+import com.startapp.sdk.adsbase.adlisteners.AdDisplayListener;
 import com.startapp.sdk.adsbase.adlisteners.AdEventListener;
 import com.startapp.sdk.adsbase.adlisteners.VideoListener;
 
@@ -68,6 +69,7 @@ public class WheelActivity extends AppCompatActivity {
     int CURRENT_TIME;
     int TASK_TIME;
     Date date;
+    StartAppAd startAppAd;
     int pointr;
     public static String COUNT_NAME="counter";
 
@@ -88,6 +90,7 @@ public class WheelActivity extends AppCompatActivity {
         Paper.init(this);
         StartAppSDK.init(getApplicationContext(),getString(R.string.startapp_id));
         date=new Date();
+        startAppAd=new StartAppAd(getApplicationContext());
         CURRENT_TIME= date.getHours();
 
 
@@ -120,7 +123,6 @@ public class WheelActivity extends AppCompatActivity {
 
             }
         });
-
         binding.wheelView.setLuckyRoundItemSelectedListener(new LuckyWheelView.LuckyRoundItemSelectedListener() {
             @Override
             public void LuckyRoundItemSelected(int index) {
@@ -287,11 +289,8 @@ public class WheelActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "Point Added Success", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(), "Close Ads", Toast.LENGTH_SHORT).show();
-
-
-
-//                            countDownTimer.start();
+                            CheckTime();
+                            CheckCountResume();
                             isCompleted=true;
                         }else {
                             Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -302,59 +301,35 @@ public class WheelActivity extends AppCompatActivity {
 
 
     }
-    @Override
-    public void onBackPressed() {
-        if (isCompleted){
-            finish();
-        }else {
-            Toast.makeText(getApplicationContext(), "Wait Task is running !", Toast.LENGTH_SHORT).show();
-        }
-
-    }
     private void ShowAd(){
-        final StartAppAd rewardedVideo = new StartAppAd(this);
 
-        rewardedVideo.setVideoListener(new VideoListener() {
-
+        startAppAd.showAd();
+        startAppAd.showAd(new AdDisplayListener() {
 
             @Override
-            public void onVideoCompleted() {
+            public void adHidden(Ad ad) {
+                UPdata(point);
 
+
+            }
+            @Override
+            public void adDisplayed(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads Displayed", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void adClicked(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads clicked", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void adNotDisplayed(Ad ad) {
+                //Toast.makeText(getApplicationContext(), "ads not Displayed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        rewardedVideo.loadAd(StartAppAd.AdMode.REWARDED_VIDEO, new AdEventListener() {
-
-            @Override
-            public void onReceiveAd(Ad ad) {
-                rewardedVideo.showAd();
-                Toast.makeText(getApplicationContext(), "Watch Full Ads !", Toast.LENGTH_SHORT).show();
-                CountDownTimer countDownTimer=new CountDownTimer(60000,1000) {
-                    @Override
-                    public void onTick(long l) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        UPdata(point);
-                        COUNT=COUNT+1;
-                        Log.d("MyTag", "onFinish: "+COUNT);
 
 
-                    }
-                }.start();
 
 
-            }
-
-            @Override
-            public void onFailedToReceiveAd(Ad ad) {
-                Toast.makeText(getApplicationContext(), ad.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-
-        });
 
 
     }
@@ -406,7 +381,6 @@ public class WheelActivity extends AppCompatActivity {
 
 
     }
-
 
     /////////////////////////////////////////////////////////////////////
 
@@ -513,10 +487,12 @@ public class WheelActivity extends AppCompatActivity {
 
                             } else {
 
-                                Toast.makeText(getApplicationContext(), "Your Task Limit 13 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Your Task Limit 15 is end pls try after 2 Hour's", Toast.LENGTH_LONG).show();
                                 binding.button.setEnabled(false);
                             }
 
+                        }else {
+                            binding.button.setEnabled(true);
                         }
                     }
 
@@ -561,9 +537,38 @@ public class WheelActivity extends AppCompatActivity {
 
     }
 
+    private void CheckCountResume(){
+
+        DatabaseReference drs=FirebaseDatabase.getInstance().getReference("Counter")
+                .child("wheel");
+        drs.child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Counter counter=snapshot.getValue(Counter.class);
+                        if (snapshot.exists()) {
+                            if (counter.getCount() >= 15) {
+                                UpdateTime();
+                                start(0);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        CheckCountResume();
+        super.onResume();
+    }
 }
 
 
